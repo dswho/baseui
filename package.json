@@ -126,6 +126,7 @@
   "dependencies": {
     "memoize-one": "^4.0.2",
     "popper.js": "^1.14.3",
+    "react-virtualized": "^9.21.0",
     "screener-storybook": "^0.16.1",
     "smoothscroll-polyfill": "^0.4.3"
   },
