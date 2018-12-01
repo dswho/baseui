@@ -8,7 +8,7 @@ LICENSE file in the root directory of this source tree.
 import * as React from 'react';
 import {getOverride, getOverrideProps} from '../helpers/overrides';
 import {Root as StyledRoot} from './styled-components';
-
+import {TestTable} from './test-table';
 import type {ComponentPropsT, SharedStylePropsArgT} from './types';
 
 class Component extends React.Component<ComponentPropsT> {
@@ -38,6 +38,7 @@ class Component extends React.Component<ComponentPropsT> {
         {...sharedProps}
         {...getOverrideProps(RootOverride)}
       >
+        <TestTable />
         {children}
       </Root>
     );
