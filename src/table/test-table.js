@@ -7,13 +7,33 @@ LICENSE file in the root directory of this source tree.
 // @flow
 
 import React from 'react';
-import {Column, Table} from 'react-virtualized';
+import {Column, Table, InfiniteLoader} from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 
+function isRowLoaded({index}) {
+  return !!list[index];
+}
+
+function loadMoreRows({startIndex, stopIndex}) {
+  // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
+  //   .then(response => {
+  //     // Store response data in list...
+  //   });
+  return generateData();
+}
+
+function rowRenderer({key, index, style}) {
+  return (
+    <div key={key} style={style}>
+      {list[index]}
+    </div>
+  );
+}
+
 // Table data as an array of objects
-const generateData = (size = 20) => {
+const generateData = (start = 0, stop = 20) => {
   const data = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = start; i < stop; i++) {
     data.push({
       name: `Brian Vaughn (${i})`,
       description: `Software engineer (${i})`,
@@ -24,16 +44,24 @@ const generateData = (size = 20) => {
 const list = generateData();
 export const TestTable = () => {
   return (
-    <Table
-      width={300}
-      height={300}
-      headerHeight={20}
-      rowHeight={30}
-      rowCount={list.length}
-      rowGetter={({index}) => list[index]}
+    <InfiniteLoader
+      isRowLoaded={isRowLoaded}
+      loadMoreRows={loadMoreRows}
+      rowCount={1000}
     >
-      <Column label="Name" dataKey="name" width={100} />
-      <Column width={200} label="Description" dataKey="description" />
-    </Table>
+      {({onRowsRendered, registerChild}) => (
+        <Table
+          width={300}
+          height={300}
+          headerHeight={20}
+          rowHeight={30}
+          rowCount={list.length}
+          rowGetter={({index}) => list[index]}
+        >
+          <Column label="Name" dataKey="name" width={100} />
+          <Column width={200} label="Description" dataKey="description" />
+        </Table>
+      )}
+    </InfiniteLoader>
   );
 };
